@@ -1,150 +1,70 @@
-import {
-  FC,
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useUpdateView } from "../../hooks/updateView";
-import { Notification, Table } from "@arco-design/web-react";
+import { FC, useCallback, useEffect, useState } from "react";
+import { Notification } from "@arco-design/web-react";
 
 import Container from "../../modal/container";
-import { Fields, Inputs, Output, Outputs } from "../../modal/type";
+import { Fields, Inputs, Output } from "../../modal/type";
+import Workspace from "../workspace/workspace";
 
-let listened = false;
-function listenNumberEvent(ref: MutableRefObject<Output>, cb?: Function): void {
-  if (listened) {
-    return;
-  }
-  listened = true;
+import "./index.scss";
 
-  document.addEventListener("keydown", (ev: KeyboardEvent) => {
-    const selection = getSelection()?.toString();
-    if (selection) {
-      ref.current.datas.push(selection);
-      cb?.();
-    }
-  });
+function download(filename: string, text: string) {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }
-
 interface IMain {
   fields: Fields;
   inputs: Inputs;
 }
 const Main: FC<IMain> = ({ fields, inputs }) => {
-  const updateView = useUpdateView();
-  const [container] = useState(new Container(fields, inputs, updateView));
+  const [container] = useState(new Container(fields, inputs));
   const [finishLoad, setFinishLoad] = useState(false);
 
-  const [currentInput, setCurrentInput] = useState(container.getCurrentInput());
-  const outputRef = useRef<Output>({ id: 0, datas: [] });
-  const next = useCallback(() => {
-    try {
-      const hasNext = container.loadOutput(outputRef.current);
+  const [curtInput, setcurtInput] = useState(container.getCurtInput());
+  const next = useCallback(
+    (output: Output) => {
+      try {
+        const hasNext = container.loadOutput(output);
 
-      if (hasNext) {
-        const currentInput = container.getCurrentInput();
-        setCurrentInput(currentInput);
-      } else {
-        setFinishLoad(true);
+        if (hasNext) {
+          const curtInput = container.getCurtInput();
+          setcurtInput(curtInput);
+        } else {
+          setFinishLoad(true);
+        }
+      } catch (error) {
+        Notification.error({
+          title: "Error",
+          content: error instanceof Error ? error.message : String(error),
+        });
       }
-
-      outputRef.current = { id: outputRef.current.id + 1, datas: [] };
-    } catch (error) {
-      Notification.error({
-        title: "Error",
-        content: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }, [container]);
+    },
+    [container]
+  );
 
   useEffect(() => {
-    listenNumberEvent(outputRef, () => {
-      updateView();
-      if (outputRef.current.datas.length > container.getFieldsLength()) {
-        outputRef.current.datas.pop();
-      }
-    });
-  }, [container, next, updateView]);
+    if (finishLoad) {
+      download("output", container.export());
+    }
+  }, [container, finishLoad]);
 
-  return (
-    <Workspace
-      finishLoad={finishLoad}
-      currentInput={currentInput}
-      fields={fields}
-      outputs={container.export()}
-      output={outputRef.current}
-      next={next}
-    />
-  );
-};
-
-interface IWorkspace {
-  finishLoad: boolean;
-  currentInput: string;
-  fields: Fields;
-  outputs: Outputs;
-  output: Output;
-  next: () => void;
-}
-const Workspace: FC<IWorkspace> = ({
-  finishLoad,
-  currentInput,
-  fields,
-  outputs,
-  output,
-  next,
-}) => {
   return finishLoad ? (
-    <div>
-      {"done"}
-      <Table
-        columns={fields.map((field) => ({
-          title: field,
-          dataIndex: field,
-        }))}
-        data={outputs.map((output) =>
-          output.datas.reduce(
-            (prev, data, i) => ({
-              ...prev,
-              [fields[i]]: data,
-            }),
-            {}
-          )
-        )}
-      />
-    </div>
+    <div>Done</div>
   ) : (
-    <div>
-      <div>{currentInput}</div>
-      <button onClick={next}>Next</button>
-      <DataTable fields={fields} output={output} />
+    <div className="main">
+      <Workspace curtInput={curtInput} fields={fields} next={next} />
+      <div className="progress">Progress</div>
     </div>
-  );
-};
-
-interface IDataTable {
-  fields: Fields;
-  output: Output;
-}
-const DataTable: FC<IDataTable> = ({ fields, output }) => {
-  return (
-    <Table
-      columns={fields.map((field) => ({
-        title: field,
-        dataIndex: field,
-      }))}
-      data={[
-        output.datas.reduce(
-          (prev, data, i) => ({
-            ...prev,
-            [fields[i]]: data,
-          }),
-          {}
-        ),
-      ]}
-    />
   );
 };
 

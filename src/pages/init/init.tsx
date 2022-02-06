@@ -1,4 +1,5 @@
-import React, { FC, useCallback } from "react";
+import { Button, Upload } from "@arco-design/web-react";
+import React, { FC, useCallback, useState } from "react";
 import { Fields, Inputs } from "../../modal/type";
 import readBlob from "../../utils/readblob";
 
@@ -10,34 +11,42 @@ const parseInputs = (text: string): Inputs => {
   return text.split("\n");
 };
 
-const ID_ENUMS = {
-  FIELDS: "fields",
-  INPUTS: "inputs",
-} as const;
-const SUBMIT_DATA = "Submit files";
-
 interface IInit {
   setInited: React.Dispatch<React.SetStateAction<boolean>>;
   setFields: React.Dispatch<React.SetStateAction<string[]>>;
   setInputs: React.Dispatch<React.SetStateAction<string[]>>;
 }
 export const Init: FC<IInit> = ({ setInited, setFields, setInputs }) => {
+  const [fieldFile, setFieldFile] = useState<File | null>(null);
+  const [textsFile, setTextsFile] = useState<File | null>(null);
   const onSubmitData = useCallback(async () => {
+    if (!fieldFile || !textsFile) {
+      return;
+    }
+
     const [fieldsFileText, inputsFileText] = await Promise.all([
-      readBlob(ID_ENUMS.FIELDS),
-      readBlob(ID_ENUMS.INPUTS),
+      readBlob(fieldFile),
+      readBlob(textsFile),
     ]);
 
     setFields(parseFields(fieldsFileText));
     setInputs(parseInputs(inputsFileText));
     setInited(true);
-  }, [setFields, setInited, setInputs]);
+  }, [fieldFile, textsFile, setFields, setInited, setInputs]);
 
   return (
     <div>
-      <input type="file" id={ID_ENUMS.FIELDS} name={ID_ENUMS.FIELDS} />
-      <input type="file" id={ID_ENUMS.INPUTS} name={ID_ENUMS.INPUTS} />
-      <button onClick={onSubmitData}>{SUBMIT_DATA}</button>
+      <Upload
+        limit={1}
+        onChange={(fileList) => setFieldFile(fileList[0]?.originFile ?? null)}
+      />
+      <Upload
+        limit={1}
+        onChange={(fileList) => setTextsFile(fileList[0]?.originFile ?? null)}
+      />
+      <Button onClick={onSubmitData} disabled={!(fieldFile && textsFile)}>
+        上传
+      </Button>
     </div>
   );
 };

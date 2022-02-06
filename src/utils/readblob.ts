@@ -2,19 +2,7 @@ export const arrayBufferToString = (buffer: ArrayBuffer): string => {
   return String.fromCharCode.apply(null, Array.from(new Uint16Array(buffer)));
 };
 
-const readBlob = (
-  elementId: string,
-  startByte = 0,
-  stopByte = 0
-): Promise<string> => {
-  const inputElement = document.getElementById(
-    elementId
-  ) as HTMLInputElement | null;
-  if (!inputElement || !inputElement.files || !inputElement.files.length) {
-    throw new Error("Please select a file!");
-  }
-
-  const file = inputElement.files[0];
+const readBlob = (file: File, startByte = 0, stopByte = 0): Promise<string> => {
   const start = startByte;
   const stop = stopByte || file.size - 1;
 

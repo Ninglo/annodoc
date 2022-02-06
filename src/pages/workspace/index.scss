@@ -1,0 +1,34 @@
+.selectable {
+  user-select: text;
+}
+
+.workspace {
+  max-width: 60%;
+
+  .content-area {
+    box-shadow: 2px 2px 2px gray;
+    .text-area {
+      padding: 24px;
+      margin-bottom: 10px;
+      border: 1px solid gainsboro;
+
+      background: ghostwhite;
+
+      word-break: break-all;
+      letter-spacing: 2px;
+      font-size: 24px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .tag-btn-area {
+      display: flex;
+      flex-wrap: wrap;
+
+      background: gray;
+
+      .tag-btn {
+        margin: 5px;
+      }
+    }
+  }
+}
