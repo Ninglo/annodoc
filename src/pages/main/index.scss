@@ -2,6 +2,8 @@
   user-select: none;
   display: flex;
   flex-wrap: nowrap;
+  justify-content: center;
+  margin-top: 80px;
 
   .workspace {
     flex: 1 1 auto;

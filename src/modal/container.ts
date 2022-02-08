@@ -24,25 +24,29 @@ export default class Container {
     return this.index < this.inputs.length;
   }
 
-  export() {
-    const fieldsText = this.fields.join(", ");
+  exportList() {
     const fieldIndexMap = this.fields.reduce((prev, curt, i) => {
       prev[curt] = i;
       return prev;
     }, {} as Record<string, number>);
 
-    const datasText = this.outputs
-      .map((output) => {
-        return output
-          .reduce((list, curt) => {
-            const curtIndex = fieldIndexMap[curt.field];
-            list[curtIndex] = curt.datas.join(" ");
-            return list;
-          }, Array(this.fields.length).fill(""))
-          .join(", ");
-      })
-      .join("\n");
+    const dataList = this.outputs.map((output) => {
+      return output.reduce((list, curt) => {
+        const curtIndex = fieldIndexMap[curt.field];
+        list[curtIndex] = curt.datas.join("; ");
+        return list;
+      }, Array<string>(this.fields.length).fill(""));
+    });
 
-    return `${fieldsText}\n${datasText}`;
+    return dataList;
+  }
+
+  export() {
+    const fieldsText = this.fields.join(", ");
+
+    const dataList = this.exportList();
+    const dataText = dataList.map((data) => data.join(", ")).join("\n");
+
+    return `${fieldsText}\n${dataText}`;
   }
 }

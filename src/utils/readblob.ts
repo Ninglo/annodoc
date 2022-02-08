@@ -25,7 +25,7 @@ const readBlob = (file: File, startByte = 0, stopByte = 0): Promise<string> => {
     };
 
     const blob = file.slice(start, stop + 1);
-    reader.readAsBinaryString(blob);
+    reader.readAsText(blob);
   });
 };
 

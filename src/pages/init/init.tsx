@@ -1,52 +1,71 @@
-import { Button, Upload } from "@arco-design/web-react";
+import { Button, Form, Grid, Typography, Upload } from "@arco-design/web-react";
 import React, { FC, useCallback, useState } from "react";
-import { Fields, Inputs } from "../../modal/type";
+import { Fields } from "../../modal/type";
 import readBlob from "../../utils/readblob";
+import "./index.scss";
+const { Title } = Typography;
+const { Row, Col } = Grid;
 
 const parseFields = (text: string): Fields => {
   return text.split(" ");
 };
 
-const parseInputs = (text: string): Inputs => {
-  return text.split("\n");
-};
-
 interface IInit {
   setInited: React.Dispatch<React.SetStateAction<boolean>>;
-  setFields: React.Dispatch<React.SetStateAction<string[]>>;
+  setFields: React.Dispatch<React.SetStateAction<Fields>>;
   setInputs: React.Dispatch<React.SetStateAction<string[]>>;
 }
 export const Init: FC<IInit> = ({ setInited, setFields, setInputs }) => {
   const [fieldFile, setFieldFile] = useState<File | null>(null);
-  const [textsFile, setTextsFile] = useState<File | null>(null);
+  const [textFiles, setTextsFile] = useState<File[]>([]);
   const onSubmitData = useCallback(async () => {
-    if (!fieldFile || !textsFile) {
+    if (!(fieldFile && textFiles.length)) {
       return;
     }
 
-    const [fieldsFileText, inputsFileText] = await Promise.all([
+    const [fieldsFileText, ...dataFilesText] = await Promise.all([
       readBlob(fieldFile),
-      readBlob(textsFile),
+      ...textFiles.map((file) => readBlob(file)),
     ]);
 
     setFields(parseFields(fieldsFileText));
-    setInputs(parseInputs(inputsFileText));
+    setInputs(dataFilesText);
     setInited(true);
-  }, [fieldFile, textsFile, setFields, setInited, setInputs]);
+  }, [fieldFile, textFiles, setFields, setInputs, setInited]);
 
   return (
     <div>
-      <Upload
-        limit={1}
-        onChange={(fileList) => setFieldFile(fileList[0]?.originFile ?? null)}
-      />
-      <Upload
-        limit={1}
-        onChange={(fileList) => setTextsFile(fileList[0]?.originFile ?? null)}
-      />
-      <Button onClick={onSubmitData} disabled={!(fieldFile && textsFile)}>
-        上传
-      </Button>
+      <Row style={{ marginBottom: 10 }}>
+        <Col span={5} />
+        <Title>Load</Title>
+      </Row>
+      <Form.Item label="Field">
+        <Upload
+          limit={1}
+          onChange={(fileList) => setFieldFile(fileList[0]?.originFile ?? null)}
+        />
+      </Form.Item>
+      <Form.Item label="Datas">
+        <Upload
+          onChange={(datas) =>
+            setTextsFile(
+              datas
+                .filter((data) => data.originFile)
+                .map((data) => data.originFile!)
+            )
+          }
+        />
+      </Form.Item>
+      <Row>
+        <Col span={5} />
+        <Button
+          type="primary"
+          onClick={onSubmitData}
+          disabled={!(fieldFile && textFiles.length)}
+        >
+          上传
+        </Button>
+      </Row>
     </div>
   );
 };
