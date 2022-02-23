@@ -13,3 +13,4 @@ export type Output = FieldDatas[];
 export type Outputs = Output[];
 
 export type HasNext = boolean;
+export type DataList = string[][][];

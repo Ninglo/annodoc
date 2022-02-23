@@ -2,7 +2,7 @@
   user-select: none;
   display: flex;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-top: 80px;
 
   .workspace {
@@ -10,8 +10,16 @@
   }
 
   .progress {
-    width: 200px;
+    width: 25%;
     flex-shrink: 0;
-    margin: 4px;
+    box-shadow: 2px 2px 2px gray;
+  }
+}
+
+.result {
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

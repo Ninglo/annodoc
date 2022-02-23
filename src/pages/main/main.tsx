@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import { Notification } from "@arco-design/web-react";
 import Container from "../../modal/container";
 import { Fields, Inputs, Output } from "../../modal/type";
@@ -15,26 +15,23 @@ const Main: FC<IMain> = ({ fields, inputs }) => {
   const [finishLoad, setFinishLoad] = useState(false);
 
   const [curtInput, setcurtInput] = useState(container.getCurtInput());
-  const next = useCallback(
-    (output: Output) => {
-      try {
-        const hasNext = container.loadOutput(output);
+  const [next] = useState(() => (output: Output) => {
+    try {
+      const hasNext = container.loadOutput(output);
 
-        if (hasNext) {
-          const curtInput = container.getCurtInput();
-          setcurtInput(curtInput);
-        } else {
-          setFinishLoad(true);
-        }
-      } catch (error) {
-        Notification.error({
-          title: "Error",
-          content: error instanceof Error ? error.message : String(error),
-        });
+      if (hasNext) {
+        const curtInput = container.getCurtInput();
+        setcurtInput(curtInput);
+      } else {
+        setFinishLoad(true);
       }
-    },
-    [container]
-  );
+    } catch (error) {
+      Notification.error({
+        title: "Error",
+        content: error instanceof Error ? error.message : String(error),
+      });
+    }
+  });
 
   return finishLoad ? (
     <Result
@@ -45,7 +42,10 @@ const Main: FC<IMain> = ({ fields, inputs }) => {
   ) : (
     <div className="main">
       <Workspace curtInput={curtInput} fields={fields} next={next} />
-      {/* <div className="progress">Progress</div> */}
+      {/* <div className="progress">
+        <div>Progress</div>
+        <div>{container.getTotalSize()}</div>
+      </div> */}
     </div>
   );
 };

@@ -10,7 +10,7 @@ export default class Container {
   }
 
   getTotalSize() {
-    return this.inputs;
+    return this.inputs.length;
   }
 
   getCurtInput() {
@@ -33,9 +33,9 @@ export default class Container {
     const dataList = this.outputs.map((output) => {
       return output.reduce((list, curt) => {
         const curtIndex = fieldIndexMap[curt.field];
-        list[curtIndex] = curt.datas.join("; ");
+        list[curtIndex] = curt.datas;
         return list;
-      }, Array<string>(this.fields.length).fill(""));
+      }, Array<string[]>(this.fields.length).fill([]));
     });
 
     return dataList;
@@ -45,7 +45,9 @@ export default class Container {
     const fieldsText = this.fields.join(", ");
 
     const dataList = this.exportList();
-    const dataText = dataList.map((data) => data.join(", ")).join("\n");
+    const dataText = dataList
+      .map((data) => data.map((item) => item.join("; ")).join(", "))
+      .join("\n");
 
     return `${fieldsText}\n${dataText}`;
   }

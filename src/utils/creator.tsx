@@ -1,5 +1,5 @@
-import { ITag } from "./type";
-import { Fields } from "../../modal/type";
+import { ITag } from "../pages/workspace/type";
+import { Fields } from "../modal/type";
 
 export const createColors = (length: number): string[] => {
   const s = "100%";
@@ -7,7 +7,7 @@ export const createColors = (length: number): string[] => {
 
   let arr = [];
   for (let i = 0; i < length; i++) {
-    const h = (i / length) * 360;
+    const h = (i / length + 1) * 360;
     arr.push(`hsl(${h}, ${s}, ${v})`);
   }
   return arr;

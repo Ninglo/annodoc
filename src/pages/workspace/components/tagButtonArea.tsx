@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { ITag, ITextBlock } from "../type";
 import { Fields } from "../../../modal/type";
-import { createTags } from "../creator";
+import { createTags } from "../../../utils/creator";
 import TagButton from "./tagButton";
 
 interface ITagButtonArea {

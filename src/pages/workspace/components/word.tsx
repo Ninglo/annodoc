@@ -1,5 +1,6 @@
 import { Tooltip } from "@arco-design/web-react";
 import { IconCloseCircle } from "@arco-design/web-react/icon";
+import classNames from "classnames";
 import { FC } from "react";
 import { IWord } from "../type";
 
@@ -13,10 +14,20 @@ const Word: FC<IWord> = ({
   selectable,
   removeTag,
 }) => {
+  const className = classNames(
+    ...[
+      "word",
+      {
+        selectable: selectable && isPlain,
+        tag: !isPlain,
+      },
+    ]
+  );
+
   return (
-    <Tooltip mini disabled={isPlain} content={field}>
+    <Tooltip mini disabled={isPlain} content={field} position="tr">
       <span
-        className={selectable && isPlain ? "selectable" : !isPlain ? "tag" : ""}
+        className={className}
         style={!isPlain ? { background: color } : {}}
         data-id={id}
       >
