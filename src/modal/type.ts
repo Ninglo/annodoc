@@ -4,13 +4,18 @@ export type Fields = Field[];
 export type Input = string;
 export type Inputs = Input[];
 
-export interface FieldDatas {
-  field: Field;
-  datas: string[];
-}
-export type Output = FieldDatas[];
-
-export type Outputs = Output[];
+export type Entitys = Entity[];
 
 export type HasNext = boolean;
-export type DataList = string[][][];
+
+export interface Position {
+    lineNumber: number;
+    start: number;
+    end: number;
+}
+
+export interface Entity {
+    name: string;
+    value: string;
+    position: Position;
+}

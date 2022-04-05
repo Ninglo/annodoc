@@ -1,54 +1,34 @@
-import { Fields, HasNext, Inputs, Output, Outputs } from "./type";
+import { Fields, HasNext, Inputs, Entitys, Entity, Input } from './type';
 
 export default class Container {
-  private index = 0;
-  private outputs: Outputs = [];
-  constructor(private fields: Fields, private inputs: Inputs) {}
+    private index = 0;
+    private entitys: Entitys = [];
+    constructor(private fields: Fields, private inputs: Inputs) {}
 
-  getFieldsLength() {
-    return this.fields.length;
-  }
+    getFieldsLength(): number {
+        return this.fields.length;
+    }
 
-  getTotalSize() {
-    return this.inputs.length;
-  }
+    getTotalSize(): number {
+        return this.inputs.length;
+    }
 
-  getCurtInput() {
-    return this.inputs[this.index];
-  }
+    getCurtInput(): Input {
+        return this.inputs[this.index];
+    }
 
-  loadOutput(output: Output): HasNext {
-    this.outputs.push(output);
+    loadEntitys(entitys: Entitys): HasNext {
+        this.entitys.push(...entitys);
 
-    this.index++;
-    return this.index < this.inputs.length;
-  }
+        this.index++;
+        return this.index < this.inputs.length;
+    }
 
-  exportList() {
-    const fieldIndexMap = this.fields.reduce((prev, curt, i) => {
-      prev[curt] = i;
-      return prev;
-    }, {} as Record<string, number>);
+    exportList() {
+        return this.entitys;
+    }
 
-    const dataList = this.outputs.map((output) => {
-      return output.reduce((list, curt) => {
-        const curtIndex = fieldIndexMap[curt.field];
-        list[curtIndex] = curt.datas;
-        return list;
-      }, Array<string[]>(this.fields.length).fill([]));
-    });
-
-    return dataList;
-  }
-
-  export() {
-    const fieldsText = this.fields.join(", ");
-
-    const dataList = this.exportList();
-    const dataText = dataList
-      .map((data) => data.map((item) => item.join("; ")).join(", "))
-      .join("\n");
-
-    return `${fieldsText}\n${dataText}`;
-  }
+    export(): string {
+        return JSON.stringify(this.entitys);
+    }
 }

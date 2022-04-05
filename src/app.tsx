@@ -1,16 +1,26 @@
-import React, { FC, useState } from "react";
-import Main from "./pages/main/main";
-import { Fields, Inputs } from "./modal/type";
-import { Init } from "./pages/init/init";
+import { FC, useCallback, useState } from 'react';
+import { getAuth } from './modal/auth';
+import Login from './pages/login/login';
+import Origins from './pages/origins/origins';
+import Upload from './pages/upload/upload';
 
+export type Path = '/' | '/createUser' | '/createOrigin';
 export const App: FC = () => {
-  const [inited, setInited] = useState(false);
-  const [fields, setFields] = useState<Fields>([]);
-  const [inputs, setInputs] = useState<Inputs>([]);
+    const { auth } = getAuth();
+    const [path, setPath] = useState<Path>('/');
+    const goto = useCallback((path: Path) => {
+        setPath(path);
+    }, []);
 
-  return inited ? (
-    <Main fields={fields} inputs={inputs} />
-  ) : (
-    <Init setInited={setInited} setFields={setFields} setInputs={setInputs} />
-  );
+    return auth ? (
+        path === '/' ? (
+            <Origins goto={goto} />
+        ) : path === '/createUser' ? (
+            <Upload goto={goto} />
+        ) : (
+            <Upload goto={goto} />
+        )
+    ) : (
+        <Login />
+    );
 };
