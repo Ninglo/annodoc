@@ -17,5 +17,6 @@ export interface Position {
 export interface Entity {
     name: string;
     value: string;
+    fileIndex: number;
     position: Position;
 }

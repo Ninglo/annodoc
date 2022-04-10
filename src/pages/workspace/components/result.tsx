@@ -49,9 +49,20 @@ const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
         <div className="result">
             <Title className="title">
                 <span>完成!</span>
-                <Button type="primary" onClick={downloadResult}>
-                    下载
-                </Button>
+                <div>
+                    <Button
+                        style={{ marginRight: 8 }}
+                        type="primary"
+                        onClick={() => {
+                            window.location.href = '/static';
+                        }}
+                    >
+                        回到首页
+                    </Button>
+                    <Button type="primary" onClick={downloadResult}>
+                        下载
+                    </Button>
+                </div>
             </Title>
             <Table columns={columns} data={data} pagination={needPagination} />
         </div>

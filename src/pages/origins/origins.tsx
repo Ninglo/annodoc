@@ -2,44 +2,68 @@ import { Button, Form, Grid, Input, Select, Table, Typography } from '@arco-desi
 import { ColumnProps } from '@arco-design/web-react/es/Table';
 import { FC, useEffect, useState } from 'react';
 import { Path } from '../../app';
-import { getAuth } from '../../modal/auth';
-import { getOrigins, GetOriginsProps, Origin, OriginType } from '../../modal/origin';
+// import { getAuth } from '../../modal/auth';
+import { getOrigins, GetOriginsProps, Origin, OriginType, removeOrigin } from '../../modal/origin';
+import Result from '../workspace/components/result';
 import Workspace, { WorkspaceProps } from '../workspace/main';
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
-const createColumns = (setWorkspace: React.Dispatch<React.SetStateAction<{} | WorkspaceProps>>): ColumnProps[] => [
+const createColumns = (
+    setWorkspace: React.Dispatch<React.SetStateAction<null | WorkspaceProps>>,
+    setResult: React.Dispatch<React.SetStateAction<Origin | null>>
+): ColumnProps[] => [
     {
         title: '名称',
         dataIndex: 'name'
     },
     {
         title: '字段列表',
-        dataIndex: 'fields'
+        dataIndex: 'fields',
+        render(fields) {
+            return fields?.join(' ');
+        }
     },
     {
         title: '状态',
-        dataIndex: 'status'
+        dataIndex: 'status',
+        render(status) {
+            return status === OriginType.begin ? '待标注' : '已完成';
+        }
     },
     {
         title: '操作',
         dataIndex: 'inputs',
         render(_, item) {
             const { status } = item;
-            const { type } = getAuth();
-            const onTag = () => setWorkspace({ fields: item.fields, inputs: item.inputs });
+            // const { type } = getAuth();
+            const onTag = () => setWorkspace({ fields: item.fields, inputs: item.inputs, origin: item });
+            const onResult = () => setResult(item);
+            const onDelete = async () => {
+                await removeOrigin(item._id);
+                window.location.href = '';
+            };
             return (
                 <div>
-                    {status !== OriginType.finish && <Button onClick={onTag}>标注</Button>}
-                    {type === 'root' && <Button>Remove</Button>}
+                    {status !== OriginType.finish && (
+                        <Button onClick={onTag} style={{ marginRight: 8 }}>
+                            标注
+                        </Button>
+                    )}
+                    {status === OriginType.finish && (
+                        <Button onClick={onResult} style={{ marginRight: 8 }}>
+                            查看结果
+                        </Button>
+                    )}
+                    {<Button onClick={onDelete}>移除</Button>}
                 </div>
             );
         }
     }
 ];
 
-function isValid(workspace: WorkspaceProps | {}): workspace is WorkspaceProps {
-    return !!Object.keys(workspace).length;
+function isValid(workspace: WorkspaceProps | null): workspace is WorkspaceProps {
+    return !!workspace;
 }
 
 interface OriginsProps {
@@ -47,19 +71,32 @@ interface OriginsProps {
 }
 const Origins: FC<OriginsProps> = ({ goto }) => {
     const [origins, setOrigins] = useState<Origin[]>([]);
-    const [workspace, setWorkspace] = useState<WorkspaceProps | {}>({});
-    const columns = createColumns(setWorkspace);
+    const [workspace, setWorkspace] = useState<WorkspaceProps | null>(null);
+    const [result, setResult] = useState<Origin | null>(null);
+    const columns = createColumns(setWorkspace, setResult);
 
-    const updateTable = async (data: GetOriginsProps) => {
-        const origins = await getOrigins(data);
-        setOrigins(origins);
+    const updateTable = async (data?: GetOriginsProps) => {
+        const origins = (await getOrigins()) ?? [];
+        setOrigins(
+            data?.name && data?.status
+                ? origins
+                      .filter((origin) => origin.name.includes(data?.name ?? ''))
+                      .filter((origin) => origin.status === data?.status)
+                : data?.name
+                ? origins.filter((origin) => origin.name.includes(data?.name ?? ''))
+                : data?.status
+                ? origins.filter((origin) => origin.status === data?.status)
+                : origins
+        );
     };
 
     useEffect(() => {
-        updateTable({});
+        updateTable();
     }, []);
 
-    return isValid(workspace) ? (
+    return result ? (
+        <Result fields={result.fields} dataList={result.result} dataText={JSON.stringify(result.result)} />
+    ) : isValid(workspace) ? (
         <Workspace {...workspace} />
     ) : (
         <div>
@@ -91,7 +128,13 @@ const Origins: FC<OriginsProps> = ({ goto }) => {
                     ></Select>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                        style={{
+                            justifyContent: 'flex-end'
+                        }}
+                        type="primary"
+                        htmlType="submit"
+                    >
                         提交
                     </Button>
                 </FormItem>

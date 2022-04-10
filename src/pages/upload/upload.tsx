@@ -30,14 +30,16 @@ const Upload: FC<UploadProps> = ({ goto }) => {
             ...textFiles.map((file) => readBlob(file))
         ]);
 
-        createOrigin({
+        await createOrigin({
             name,
             fields: parseFields(fieldsFileText),
-            inputs: dataFilesText
+            inputs: dataFilesText,
+            result: []
         });
 
-        goto('/');
-    }, [fieldFile, goto, name, textFiles]);
+        window.location.href = '/static/';
+        // goto('/');
+    }, [fieldFile, name, textFiles]);
 
     return (
         <div>
