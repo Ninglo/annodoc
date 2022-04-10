@@ -1,4 +1,4 @@
-import { Fields, HasNext, Inputs, Entitys, Input } from './type';
+import { Fields, HasNext, Inputs, Entitys, Input, Entity } from './type';
 
 export default class Container {
     private index = 0;
@@ -17,7 +17,7 @@ export default class Container {
         return this.inputs[this.index];
     }
 
-    loadEntitys(entitys: Entitys): HasNext {
+    loadEntitys(entitys: Omit<Entity, 'fileIndex'>[]): HasNext {
         this.entitys.push(...entitys.map((entity) => ({ ...entity, fileIndex: this.index })));
 
         this.index++;

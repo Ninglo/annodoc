@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import Container from '../../modal/container';
-import { Entitys, Fields, Inputs } from '../../modal/type';
+import { Entity, Fields, Inputs } from '../../modal/type';
 import Workspace from './components/workspace/workspace';
 import Result from './components/result';
 import './index.scss';
@@ -25,7 +25,7 @@ const Main: FC<WorkspaceProps> = ({ fields, inputs, origin }) => {
     }, [container, finishLoad, origin]);
 
     const [curtInput, setcurtInput] = useState(container.getCurtInput());
-    const [next] = useState(() => (entitys: Omit<Entitys, 'fileIndex'>) => {
+    const [next] = useState(() => (entitys: Omit<Entity, 'fileIndex'>[]) => {
         const hasNext = container.loadEntitys(entitys);
 
         if (hasNext) {

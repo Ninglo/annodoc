@@ -14,7 +14,7 @@ export interface ITextBlock {
 export interface IWorkspace {
     curtInput: string;
     fields: Fields;
-    next: (entitys: Entitys) => void;
+    next: (entitys: Omit<Entity, 'fileIndex'>[]) => void;
 }
 export interface IWord extends ITextBlock {
     removeTag: (id: number) => void;
