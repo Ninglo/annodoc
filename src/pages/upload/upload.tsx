@@ -37,7 +37,7 @@ const Upload: FC<UploadProps> = ({ goto }) => {
             result: []
         });
 
-        window.location.href = '/static/';
+        window.location.href = '/';
         // goto('/');
     }, [fieldFile, name, textFiles]);
 
