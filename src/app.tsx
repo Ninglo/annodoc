@@ -6,7 +6,7 @@ import Upload from './pages/upload/upload';
 
 export type Path = '/' | '/createUser' | '/createOrigin';
 export const App: FC = () => {
-    const { auth } = getAuth();
+    const auth = true;
     const [path, setPath] = useState<Path>('/');
     const goto = useCallback((path: Path) => {
         setPath(path);

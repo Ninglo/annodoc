@@ -54,7 +54,7 @@ const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
                         style={{ marginRight: 8 }}
                         type="primary"
                         onClick={() => {
-                            window.location.href = '/static';
+                            window.location.href = '/';
                         }}
                     >
                         回到首页
