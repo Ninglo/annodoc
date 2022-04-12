@@ -21,6 +21,6 @@ export const App: FC = () => {
             <Upload goto={goto} />
         )
     ) : (
-        <Login />
+        <Origins goto={goto} />
     );
 };
