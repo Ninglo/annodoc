@@ -1,54 +1,73 @@
-import { Fields, HasNext, Inputs, Output, Outputs } from "./type";
+import { ITag, ITextBlocks } from '../pages/workspace/components/workspace/type'
+import { createTags } from '../utils/creator'
+import { getMachineResult } from './machine'
+import { Entitys, Fields, Inputs } from './type'
+
+const textBlocksToEntitys = (textBlocks: ITextBlocks, fileIndex: number): Entitys => {
+    return textBlocks
+        .filter((textBlock) => !textBlock.isPlain)
+        .map((textBlock) => ({
+            name: textBlock.field,
+            value: textBlock.text,
+            position: textBlock.position,
+            fileIndex,
+        }))
+}
 
 export default class Container {
-  private index = 0;
-  private outputs: Outputs = [];
-  constructor(private fields: Fields, private inputs: Inputs) {}
+    static humanTag(inputs: Inputs, fields: Fields): Container {
+        let blockId = 1
+        const textBlocks = inputs.map(input => input.split('\n')
+            .map((line, lineNumber) => ({
+                isPlain: true,
+                text: `${line}\n`,
+                type: '',
+                color: '',
+                id: blockId++,
+                selectable: true,
+                field: '',
+                position: {
+                    lineNumber,
+                    start: 0,
+                    end: line.length - 1
+                }
+            })))
 
-  getFieldsLength() {
-    return this.fields.length;
-  }
+        const tags = createTags(fields)
+        return new Container(textBlocks, tags, blockId)
+    }
 
-  getTotalSize() {
-    return this.inputs.length;
-  }
+    static async machineTag(inputs: Inputs, fields: Fields): Promise<Container> {
+        const res = await getMachineResult(inputs, fields)
+        return new Container(...res)
+    }
 
-  getCurtInput() {
-    return this.inputs[this.index];
-  }
+    private constructor(private textBlocksList: ITextBlocks[], private tags: ITag[], public blockId: number) {
+        console.log(this.textBlocksList)
+    }
 
-  loadOutput(output: Output): HasNext {
-    this.outputs.push(output);
+    index = 0
 
-    this.index++;
-    return this.index < this.inputs.length;
-  }
+    get hasPrev(): boolean {
+        return this.index > 0
+    }
 
-  exportList() {
-    const fieldIndexMap = this.fields.reduce((prev, curt, i) => {
-      prev[curt] = i;
-      return prev;
-    }, {} as Record<string, number>);
+    get curtTextBlocks(): ITextBlocks {
+        return this.textBlocksList[this.index]
+    }
 
-    const dataList = this.outputs.map((output) => {
-      return output.reduce((list, curt) => {
-        const curtIndex = fieldIndexMap[curt.field];
-        list[curtIndex] = curt.datas;
-        return list;
-      }, Array<string[]>(this.fields.length).fill([]));
-    });
+    isFinished() {
+        return this.index >= this.textBlocksList.length - 1
+    }
 
-    return dataList;
-  }
+    loadCurtTextBlocks(textBlocks: ITextBlocks) {
+        this.textBlocksList[this.index] = textBlocks
+    }
 
-  export() {
-    const fieldsText = this.fields.join(", ");
-
-    const dataList = this.exportList();
-    const dataText = dataList
-      .map((data) => data.map((item) => item.join("; ")).join(", "))
-      .join("\n");
-
-    return `${fieldsText}\n${dataText}`;
-  }
+    exportList(): Entitys {
+        const result = this.textBlocksList.map((textBlocks, i) => {
+            return textBlocksToEntitys(textBlocks, i)
+        })
+        return result.flat()
+    }
 }

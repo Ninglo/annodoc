@@ -1,16 +1,18 @@
-import React, { FC, useState } from "react";
-import Main from "./pages/main/main";
-import { Fields, Inputs } from "./modal/type";
-import { Init } from "./pages/init/init";
+import { FC, useCallback, useState } from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom"
+import Origins from './pages/origins/origins'
+import Upload from './pages/upload/upload'
 
 export const App: FC = () => {
-  const [inited, setInited] = useState(false);
-  const [fields, setFields] = useState<Fields>([]);
-  const [inputs, setInputs] = useState<Inputs>([]);
 
-  return inited ? (
-    <Main fields={fields} inputs={inputs} />
-  ) : (
-    <Init setInited={setInited} setFields={setFields} setInputs={setInputs} />
-  );
-};
+  return <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Origins />} />
+      <Route path="/createUser" element={<Upload />} />
+    </Routes>
+  </BrowserRouter>
+}

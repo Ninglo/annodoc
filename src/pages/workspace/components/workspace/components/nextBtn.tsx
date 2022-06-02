@@ -1,9 +1,9 @@
-import { FC } from "react";
-import { Button } from "@arco-design/web-react";
-import { IconRight } from "@arco-design/web-react/icon";
+import { FC } from "react"
+import { Button } from "@arco-design/web-react"
+import { IconRight } from "@arco-design/web-react/icon"
 
 interface INextBtn {
-  onClick: () => void;
+  onClick: () => void
 }
 
 const NextBtn: FC<INextBtn> = ({ onClick }) => (
@@ -13,6 +13,6 @@ const NextBtn: FC<INextBtn> = ({ onClick }) => (
       <IconRight />
     </div>
   </Button>
-);
+)
 
-export default NextBtn;
+export default NextBtn

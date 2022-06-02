@@ -1,16 +1,24 @@
-export type Field = string;
-export type Fields = Field[];
+export type Field = string
+export type Fields = Field[]
 
-export type Input = string;
-export type Inputs = Input[];
+export type Input = string
+export type Inputs = Input[]
 
-export interface FieldDatas {
-  field: Field;
-  datas: string[];
+export type Entitys = Entity[]
+
+export type HasNext = boolean
+
+export interface Position {
+    lineNumber: number
+    start: number
+    end: number
 }
-export type Output = FieldDatas[];
 
-export type Outputs = Output[];
+export interface Entity {
+    name: string
+    value: string
+    fileIndex: number
+    position: Position
+}
 
-export type HasNext = boolean;
-export type DataList = string[][][];
+export type Noop = () => void
