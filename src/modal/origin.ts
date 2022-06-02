@@ -1,5 +1,5 @@
-import { request } from './request';
-import { Entity, Entitys, Fields, Inputs } from './type';
+import { request } from './request'
+import { Entity, Entitys, Fields, Inputs } from './type'
 
 export const enum OriginType {
     begin = 1,
@@ -8,42 +8,42 @@ export const enum OriginType {
 }
 
 export interface Origin {
-    name: string;
-    status: OriginType;
-    fields: Fields;
-    inputs: Inputs;
-    result: Entitys;
-    _id: number;
+    name: string
+    status: OriginType
+    fields: Fields
+    inputs: Inputs
+    result: Entitys
+    _id: number
 }
 
 export interface GetOriginsProps {
-    name?: string;
-    status?: OriginType;
+    name?: string
+    status?: OriginType
 }
-type GetOrigins = (data?: GetOriginsProps) => Promise<Origin[] | undefined>;
+type GetOrigins = (data?: GetOriginsProps) => Promise<Origin[] | undefined>
 export const getOrigins: GetOrigins = async (data) => {
-    const res = await request.get('origins', { data });
+    const res = await request.get('origins', { data })
 
-    return res.data.origins;
-};
+    return res.data.origins
+}
 
-type CreateOrigin = (origin: Omit<Origin, '_id' | 'status'>) => Promise<void>;
+type CreateOrigin = (origin: Omit<Origin, '_id' | 'status'>) => Promise<void>
 export const createOrigin: CreateOrigin = async (origin) => {
-    const res = await request.post(`origin`, origin);
+    const res = await request.post(`origin`, origin)
 
-    return res.data;
-};
+    return res.data
+}
 
-type RemoveOrigin = (id: number) => Promise<void>;
+type RemoveOrigin = (id: number) => Promise<void>
 export const removeOrigin: RemoveOrigin = async (_id) => {
-    const res = await request.delete(`origin`, { data: { _id } });
+    const res = await request.delete(`origin`, { data: { _id } })
 
-    return res.data;
-};
+    return res.data
+}
 
-type UpdateOrigin = (origin: Origin) => Promise<void>;
+type UpdateOrigin = (origin: Origin) => Promise<void>
 export const updateOrigin: UpdateOrigin = async (origin) => {
-    const res = await request.patch(`origin`, origin);
+    const res = await request.patch(`origin`, origin)
 
-    return res.data;
-};
+    return res.data
+}

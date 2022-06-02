@@ -1,17 +1,16 @@
-import { Button, Form, Input, Typography } from '@arco-design/web-react';
-import { FC } from 'react';
-import { checkLogin, LoginData, setAuth } from '../../modal/auth';
-const FormItem = Form.Item;
+import { Button, Form, Input, Typography } from '@arco-design/web-react'
+import { FC } from 'react'
+import { checkLogin, LoginData, setAuth } from '../../modal/auth'
+const FormItem = Form.Item
 
 const Login: FC = () => {
     const login = async (data: LoginData) => {
         try {
-            const auth = await checkLogin(data);
-        } catch (error) {}
-        setAuth({ auth: '1', name: '1', type: 'root' });
+            checkLogin(data)
+        } catch (error) { }
 
-        window.location.href = '';
-    };
+        window.location.href = ''
+    }
 
     return (
         <div>
@@ -30,7 +29,7 @@ const Login: FC = () => {
                 </FormItem>
             </Form>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

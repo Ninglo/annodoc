@@ -1,106 +1,37 @@
 .selectable {
-  user-select: text;
+  user-select: text
 }
 
 .workspace {
-  max-width: 80%;
-
-  .content-area {
-    box-shadow: 2px 2px 2px gray;
-    .text-area {
-      min-height: 200px;
-      padding: 24px 24px 60px 24px;
-      margin-bottom: 30px;
-      border: 1px solid gainsboro;
-
-      background: ghostwhite;
-
-      line-height: 2em;
-      word-break: break-all;
-      letter-spacing: 2px;
-      font-size: 24px;
-      color: rgb(92, 92, 92);
-
-      .tag {
-        margin: 6px;
-        padding: 4px 8px;
-        border-radius: 14px;
-        color: rgb(247, 247, 247);
-
-        .icon {
-          padding-left: 2px;
-          height: 21px;
+  max-width: 80% .content-area {
+    box-shadow: 2px 2px 2px gray .text-area {
+      min-height: 200px padding: 24px 24px 60px 24px margin-bottom: 30px border: 1px solid gainsboro background: ghostwhite line-height: 2em word-break: break-all letter-spacing: 2px font-size: 24px color: rgb(92, 92, 92) .tag {
+        margin: 6px padding: 4px 8px border-radius: 14px color: rgb(247, 247, 247) .icon {
+          padding-left: 2px height: 21px
         }
       }
 
       .word {
-        white-space: pre-line;
+        white-space: pre-line
       }
     }
 
     .tag-btn-area {
-      position: sticky;
-      top: 0px;
-
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-
-      padding: 8px;
-      border: 1px solid gainsboro;
-      border-bottom: 0;
-      background: #e9e9e9;
-
-      .tag-btn {
-        display: flex;
-        margin: 6px 4px;
-
-        .tag-btn-left {
-          border: 0;
-          border-radius: 2px 0px 0px 2px;
-          min-width: 60px;
-          height: 32px;
-          font-weight: bold;
-          color: rgb(255, 255, 255);
+      position: sticky top: 0px display: flex flex-wrap: wrap justify-content: space-around padding: 8px border: 1px solid gainsboro border-bottom: 0 background: #e9e9e9 .tag-btn {
+        display: flex margin: 6px 4px .tag-btn-left {
+          border: 0 border-radius: 2px 0px 0px 2px min-width: 60px height: 32px font-weight: bold color: rgb(255, 255, 255)
         }
 
         .tag-btn-right {
-          width: 22px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          border-radius: 0 2px 2px 0;
-          background: rgb(250, 250, 250);
-          color: rgb(55, 55, 55);
-
-          font-size: 16px;
-          font-weight: bold;
-
-          cursor: pointer;
+          width: 22px display: flex justify-content: center align-items: center border-radius: 0 2px 2px 0 background: rgb(250, 250, 250) color: rgb(55, 55, 55) font-size: 16px font-weight: bold cursor: pointer
         }
       }
     }
   }
 
   .next-btn {
-    display: flex;
-    align-items: center;
-    float: right;
-    width: 90px;
-    height: 48px;
-    padding-left: 20px;
-
-    border: 1px solid gray;
-    border-radius: 10px;
-
-    font-size: 18px;
-    font-weight: bold;
-    background: white;
-    color: black;
-
-    .icon {
-      margin-top: 3px;
+    display: flex align-items: center float: right width: 90px height: 48px padding-left: 20px border: 1px solid gray border-radius: 10px font-size: 18px font-weight: bold background: white color: black .icon {
+      margin-top: 3px
     }
   }
 }

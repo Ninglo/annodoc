@@ -1,45 +1,41 @@
-import { Button, Form, Grid, Input, Typography, Upload as ArcoUpload } from '@arco-design/web-react';
-import React, { FC, useCallback, useState } from 'react';
-import { Path } from '../../app';
-import { createOrigin } from '../../modal/origin';
-import { Fields } from '../../modal/type';
-import readBlob from '../../utils/readblob';
-import './index.scss';
-const { Title } = Typography;
-const { Row, Col } = Grid;
+import { Button, Form, Grid, Input, Typography, Upload as ArcoUpload } from '@arco-design/web-react'
+import React, { FC, useCallback, useState } from 'react'
+import { createOrigin } from '../../modal/origin'
+import { Fields } from '../../modal/type'
+import readBlob from '../../utils/readblob'
+import './index.scss'
+
+const { Title } = Typography
+const { Row, Col } = Grid
 
 const parseFields = (text: string): Fields => {
-    return text.split(' ');
-};
-
-interface UploadProps {
-    goto(path: Path): void;
+    return text.split(' ')
 }
-const Upload: FC<UploadProps> = ({ goto }) => {
-    const [name, setName] = useState('');
-    const [fieldFile, setFieldFile] = useState<File | null>(null);
-    const [textFiles, setTextsFile] = useState<File[]>([]);
+
+const Upload: FC = () => {
+    const [name, setName] = useState('')
+    const [fieldFile, setFieldFile] = useState<File | null>(null)
+    const [textFiles, setTextsFile] = useState<File[]>([])
 
     const onSubmitData = useCallback(async () => {
         if (!(fieldFile && textFiles.length)) {
-            return;
+            return
         }
 
         const [fieldsFileText, ...dataFilesText] = await Promise.all([
             readBlob(fieldFile),
             ...textFiles.map((file) => readBlob(file))
-        ]);
+        ])
 
         await createOrigin({
             name,
             fields: parseFields(fieldsFileText),
             inputs: dataFilesText,
             result: []
-        });
+        })
 
-        window.location.href = '/';
-        // goto('/');
-    }, [fieldFile, name, textFiles]);
+        window.location.href = '/'
+    }, [fieldFile, name, textFiles])
 
     return (
         <div>
@@ -67,7 +63,7 @@ const Upload: FC<UploadProps> = ({ goto }) => {
                 </Button>
             </Row>
         </div>
-    );
-};
+    )
+}
 
-export default Upload;
+export default Upload

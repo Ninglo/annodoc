@@ -1,25 +1,15 @@
 .main {
-  user-select: none;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-  margin-top: 80px;
-
-  .workspace {
-    flex: 1 1 auto;
+  user-select: none display: flex flex-wrap: nowrap justify-content: space-evenly margin-top: 80px .workspace {
+    flex: 1 1 auto
   }
 
   .progress {
-    width: 25%;
-    flex-shrink: 0;
-    box-shadow: 2px 2px 2px gray;
+    width: 25% flex-shrink: 0 box-shadow: 2px 2px 2px gray
   }
 }
 
 .result {
   .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex justify-content: space-between align-items: center
   }
 }

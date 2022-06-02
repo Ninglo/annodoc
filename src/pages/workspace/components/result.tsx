@@ -1,16 +1,16 @@
-import { FC } from 'react';
-import { Button, Table } from '@arco-design/web-react';
-import { Entitys, Fields } from '../../../modal/type';
-import { download } from '../../../utils/download';
-import { ColumnProps } from '@arco-design/web-react/es/Table';
-import Title from '@arco-design/web-react/es/Typography/title';
+import { FC } from 'react'
+import { Button, Table } from '@arco-design/web-react'
+import { Entitys, Fields } from '../../../modal/type'
+import { download } from '../../../utils/download'
+import { ColumnProps } from '@arco-design/web-react/es/Table'
+import Title from '@arco-design/web-react/es/Typography/title'
 
 const columns: ColumnProps[] = [
     {
         title: '行数',
         dataIndex: 'position.lineNumber',
         sorter(a, b) {
-            return a - b;
+            return a - b
         }
     },
     {
@@ -29,21 +29,21 @@ const columns: ColumnProps[] = [
         title: '结束',
         dataIndex: 'position.end'
     }
-];
+]
 
 interface IResult {
-    fields: Fields;
-    dataList: Entitys;
-    dataText: string;
+    fields: Fields
+    dataList: Entitys
+    dataText: string
 }
 const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
-    const data = dataList;
+    const data = dataList
 
     const downloadResult = () => {
-        download('output.json', dataText);
-    };
+        download('output.json', dataText)
+    }
 
-    const needPagination = dataList.length > 10;
+    const needPagination = dataList.length > 10
 
     return (
         <div className="result">
@@ -54,7 +54,7 @@ const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
                         style={{ marginRight: 8 }}
                         type="primary"
                         onClick={() => {
-                            window.location.href = '/';
+                            window.location.href = '/'
                         }}
                     >
                         回到首页
@@ -66,7 +66,7 @@ const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
             </Title>
             <Table columns={columns} data={data} pagination={needPagination} />
         </div>
-    );
-};
+    )
+}
 
-export default Result;
+export default Result

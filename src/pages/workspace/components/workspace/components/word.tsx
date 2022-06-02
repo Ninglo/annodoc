@@ -1,8 +1,8 @@
-import { Tooltip } from '@arco-design/web-react';
-import { IconCloseCircle } from '@arco-design/web-react/icon';
-import classNames from 'classnames';
-import { FC } from 'react';
-import { IWord } from '../type';
+import { Tooltip } from '@arco-design/web-react'
+import { IconCloseCircle } from '@arco-design/web-react/icon'
+import classNames from 'classnames'
+import { FC } from 'react'
+import { IWord } from '../type'
 
 const Word: FC<IWord> = ({ text, type, color, field, isPlain, id, selectable, removeTag, position }) => {
     const className = classNames(
@@ -13,7 +13,7 @@ const Word: FC<IWord> = ({ text, type, color, field, isPlain, id, selectable, re
                 tag: !isPlain
             }
         ]
-    );
+    )
 
     return (
         <Tooltip mini disabled={isPlain} content={field} position="tr">
@@ -28,13 +28,13 @@ const Word: FC<IWord> = ({ text, type, color, field, isPlain, id, selectable, re
                     <IconCloseCircle
                         className="icon"
                         onClick={() => {
-                            removeTag(id);
+                            removeTag(id)
                         }}
                     />
                 )}
             </span>
         </Tooltip>
-    );
-};
+    )
+}
 
-export default Word;
+export default Word

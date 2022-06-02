@@ -1,54 +1,52 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { ITextBlock, IWorkspace } from './type';
-import { Entity, Entitys } from '../../../../modal/type';
-import NextBtn from './components/nextBtn';
-import TextArea from './components/textArea';
-import './index.scss';
-import TagButtonArea from './components/tagButtonArea';
+import { FC } from 'react'
+import { ITag, ITextBlock } from './type'
+import { Noop } from '../../../../modal/type'
+import NextBtn from './components/nextBtn'
+import TextArea, { ITextArea as ITextAreaProps } from './components/textArea'
+import './index.scss'
+import TagButtonArea, { ITagButtonArea as ITagButtonAreaProps } from './components/tagButtonArea'
+import PrevBtn from './components/prevBtn'
 
-const Workspace: FC<IWorkspace> = ({ curtInput, fields, next }) => {
-    const idRef = useRef(1);
-    const [textBlocks, setTextBlocks] = useState<ITextBlock[]>([]);
-    useEffect(() => {
-        setTextBlocks(() =>
-            curtInput.split('\n').map((line, lineNumber) => ({
-                isPlain: true,
-                text: `${line}\n`,
-                type: '',
-                color: '',
-                id: idRef.current++,
-                selectable: true,
-                field: '',
-                position: {
-                    lineNumber,
-                    start: 0,
-                    end: line.length - 1
-                }
-            }))
-        );
-    }, [curtInput]);
+export interface IWorkspaceCoreProps {
+    hasPrev: boolean
+    tags: ITag[]
+    textAreaRef: React.RefObject<HTMLDivElement>
+    textBlocks: ITextBlock[]
+    removeTag: (id: number) => void
+    updateTextBlocks: (tag: ITag) => void
+    prev: Noop
+    next: Noop
+}
+export const WorkspaceCore: FC<IWorkspaceCoreProps> = ({
+    hasPrev,
+    tags,
+    textBlocks,
+    textAreaRef,
+    removeTag,
+    updateTextBlocks,
+    prev,
+    next
+}) => {
+    const tagButtonAreaProps: ITagButtonAreaProps = {
+        tags,
+        updateTextBlocks
+    }
 
-    const toNext = () => {
-        next(
-            textBlocks
-                .filter((textBlock) => !textBlock.isPlain)
-                .map((textBlock) => ({
-                    name: textBlock.field,
-                    value: textBlock.text,
-                    position: textBlock.position
-                }))
-        );
-    };
-
+    const textAreaProps: ITextAreaProps = {
+        textBlocks,
+        textAreaRef,
+        removeTag
+    }
     return (
-        <div className="workspace">
-            <div className="content-area">
-                <TagButtonArea idRef={idRef} fields={fields} setTextBlocks={setTextBlocks} />
-                <TextArea textBlocks={textBlocks} setTextBlocks={setTextBlocks} />
+        <div className="main">
+            <div className="workspace">
+                <div className="content-area">
+                    <TagButtonArea {...tagButtonAreaProps} />
+                    <TextArea {...textAreaProps} />
+                </div>
+                {hasPrev && <PrevBtn onClick={prev} />}
+                <NextBtn onClick={next} />
             </div>
-            <NextBtn onClick={toNext} />
         </div>
-    );
-};
-
-export default Workspace;
+    )
+}
