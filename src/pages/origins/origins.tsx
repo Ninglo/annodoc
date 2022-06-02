@@ -23,8 +23,11 @@ const Origins: FC = () => {
         removeOrigin(id) {
             removeOrigin(id).then(() => setQuery(query => ({ ...query })))
         },
-        gotoTagWorkspace(workspace) {
-            const container = new Container(workspace)
+        async gotoTagWorkspace(workspace, type) {
+            const { inputs, fields } = workspace
+            const container = type === 'machine'
+                ? await Container.machineTag(inputs, fields)
+                : Container.humanTag(inputs, fields)
             setWorkspace({ ...workspace, container })
         },
         gotoResult: setResult,
@@ -37,7 +40,7 @@ const Origins: FC = () => {
     }
 
     return result ? (
-        <Result fields={result.fields} dataList={result.result} dataText={JSON.stringify(result.result)} />
+        <Result dataList={result.result} dataText={JSON.stringify(result.result)} />
     ) : isValid(workspace) ? (
         <TagWorkspace {...workspace} onFinished={onFinished} />
     ) : (

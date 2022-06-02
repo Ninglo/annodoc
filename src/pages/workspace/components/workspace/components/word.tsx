@@ -4,9 +4,9 @@ import classNames from 'classnames'
 import { FC } from 'react'
 import { IWord } from '../type'
 
-const Word: FC<IWord> = ({ text, type, color, field, isPlain, id, selectable, removeTag, position }) => {
+const Word: FC<IWord> = ({ text, color, field, isPlain, id, selectable, removeTag, position }) => {
     const className = classNames(
-        ...[
+        [
             'word',
             {
                 selectable: selectable && isPlain,

@@ -11,7 +11,7 @@ export interface IOriginTableProps {
     origins: Origin[]
     setQuery: React.Dispatch<React.SetStateAction<GetOriginsProps>>
     removeOrigin: (id: number) => void
-    gotoTagWorkspace: (workspace: Omit<ITagWorkspaceDataProps, 'container'>) => void
+    gotoTagWorkspace: (workspace: Omit<ITagWorkspaceDataProps, 'container'>, type: 'human' | 'machine') => void
     gotoResult: (result: Origin) => void
     gotoCreateOrigin: Noop
 }
@@ -19,7 +19,7 @@ export const OriginTable: FC<IOriginTableProps> = ({
     origins,
     setQuery,
     removeOrigin,
-    gotoTagWorkspace: gotoTagPage,
+    gotoTagWorkspace,
     gotoResult,
     gotoCreateOrigin
 }) => {
@@ -50,8 +50,13 @@ export const OriginTable: FC<IOriginTableProps> = ({
                 return (
                     <div>
                         {status !== OriginType.finish && (
-                            <Button onClick={() => gotoTagPage({ fields, inputs, origin })} style={{ marginRight: 8 }}>
-                                标注
+                            <Button onClick={() => gotoTagWorkspace({ fields, inputs, origin }, 'human')} style={{ marginRight: 8 }}>
+                                人标人审
+                            </Button>
+                        )}
+                        {status !== OriginType.finish && (
+                            <Button onClick={() => gotoTagWorkspace({ fields, inputs, origin }, 'machine')} style={{ marginRight: 8 }}>
+                                机标人审
                             </Button>
                         )}
                         {status === OriginType.finish && (

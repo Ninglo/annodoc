@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Button, Table } from '@arco-design/web-react'
-import { Entitys, Fields } from '../../../modal/type'
+import { Entitys } from '../../../modal/type'
 import { download } from '../../../utils/download'
 import { ColumnProps } from '@arco-design/web-react/es/Table'
 import Title from '@arco-design/web-react/es/Typography/title'
@@ -32,11 +32,10 @@ const columns: ColumnProps[] = [
 ]
 
 interface IResult {
-    fields: Fields
     dataList: Entitys
     dataText: string
 }
-const Result: FC<IResult> = ({ fields, dataList, dataText }) => {
+const Result: FC<IResult> = ({ dataList, dataText }) => {
     const data = dataList
 
     const downloadResult = () => {

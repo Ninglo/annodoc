@@ -6,7 +6,7 @@ export const createColors = (length: number): string[] => {
     const v = '35%'
 
     let arr = []
-    for (let i = 0 i < length i++) {
+    for (let i = 0; i < length; i++) {
         const h = (i / length + 1) * 360
         arr.push(`hsl(${h}, ${s}, ${v})`)
     }

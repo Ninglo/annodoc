@@ -2,13 +2,14 @@ import { FC, useEffect, useRef, useState } from 'react';
 import Container from '../../modal/container';
 import { Fields, Inputs } from '../../modal/type';
 import { IWorkspaceCoreProps, WorkspaceCore } from './components/workspace/workspace';
-import './index.scss';
 import { Origin } from '../../modal/origin';
 import { ITag, ITextBlock } from './components/workspace/type';
 import { createTags } from '../../utils/creator';
+import './index.scss';
 
 export interface ITagWorkspaceDataProps {
     fields: Fields;
+    inputs: Inputs;
     origin: Origin;
     container: Container;
 }
@@ -18,7 +19,6 @@ export interface ITagWorkspaceProps extends ITagWorkspaceDataProps {
 export const TagWorkspace: FC<ITagWorkspaceProps> = ({ fields, origin, container, onFinished }) => {
     const tags = createTags(fields)
     const [textBlocks, setTextBlocks] = useState<ITextBlock[]>(container.curtTextBlocks)
-    const idRef = useRef(1)
 
     const updateTextBlocks = ({ type, field, color }: ITag) => {
         const selection = getSelection()
@@ -43,7 +43,7 @@ export const TagWorkspace: FC<ITagWorkspaceProps> = ({ fields, origin, container
                             type: '',
                             color: '',
                             field: '',
-                            id: idRef.current++,
+                            id: container.blockId++,
                             selectable: true,
                             position: {
                                 lineNumber: curt.position.lineNumber,
@@ -57,7 +57,7 @@ export const TagWorkspace: FC<ITagWorkspaceProps> = ({ fields, origin, container
                             type,
                             color: color,
                             field,
-                            id: idRef.current++,
+                            id: container.blockId++,
                             selectable: true,
                             position: {
                                 lineNumber: curt.position.lineNumber,
@@ -71,7 +71,7 @@ export const TagWorkspace: FC<ITagWorkspaceProps> = ({ fields, origin, container
                             type: '',
                             color: '',
                             field: '',
-                            id: idRef.current++,
+                            id: container.blockId++,
                             selectable: true,
                             position: {
                                 lineNumber: curt.position.lineNumber,
@@ -185,13 +185,13 @@ export const TagWorkspace: FC<ITagWorkspaceProps> = ({ fields, origin, container
     }
 
     const next = () => {
+        container.loadCurtTextBlocks(textBlocks)
         if (container.isFinished()) {
             onFinished({
                 ...origin,
                 result: container.exportList()
             })
         } else {
-            container.loadCurtTextBlocks(textBlocks)
             container.index++
             setTextBlocks(container.curtTextBlocks)
         }

@@ -21,12 +21,11 @@ export interface GetOriginsProps {
     status?: OriginType
 }
 type GetOrigins = (data?: GetOriginsProps) => Promise<Origin[] | undefined>
-export const getOrigins: GetOrigins = async (data) => {
+export const getOrigins = async (data?: GetOriginsProps): Promise<Origin[] | undefined> => {
     const res = await request.get('origins', { data })
 
     return res.data.origins
 }
-
 type CreateOrigin = (origin: Omit<Origin, '_id' | 'status'>) => Promise<void>
 export const createOrigin: CreateOrigin = async (origin) => {
     const res = await request.post(`origin`, origin)

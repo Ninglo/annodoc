@@ -10,7 +10,7 @@ const TagButtonArea: FC<ITagButtonArea> = ({ tags, updateTextBlocks }) => {
     return (
         <div className="tag-btn-area">
             {tags.map((tag) => (
-                <TagButton {...tag} onClick={() => updateTextBlocks(tag)} />
+                <TagButton key={tag.field} {...tag} onClick={() => updateTextBlocks(tag)} />
             ))}
         </div>
     )
