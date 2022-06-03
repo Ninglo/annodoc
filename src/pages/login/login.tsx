@@ -1,6 +1,6 @@
 import { Button, Form, Input, Typography } from '@arco-design/web-react'
 import { FC } from 'react'
-import { checkLogin, LoginData, setAuth } from '../../modal/auth'
+import { checkLogin, LoginData } from '../../modal/auth'
 const FormItem = Form.Item
 
 const Login: FC = () => {

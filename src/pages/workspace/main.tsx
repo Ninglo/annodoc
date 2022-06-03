@@ -13,7 +13,7 @@ export interface ITagWorkspaceDataProps {
     container: Container;
 }
 export interface ITagWorkspaceProps extends ITagWorkspaceDataProps {
-    onFinished: (result: Origin) => void
+    onFinished: (result: Origin, submit: boolean) => void
 }
 export const TagWorkspace: FC<ITagWorkspaceProps> = (props) => {
     const workspaceCoreProps: IWorkspaceCoreProps = useWorkspace(props);

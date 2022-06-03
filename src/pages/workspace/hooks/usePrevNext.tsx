@@ -19,7 +19,7 @@ export function usePrevNext(container: container, textBlocks: ITextBlock[], setT
             onFinished({
                 ...origin,
                 result: container.exportList()
-            });
+            }, true);
         } else {
             container.index++;
             setTextBlocks(container.curtTextBlocks);

@@ -12,7 +12,7 @@ export interface IOriginTableProps {
     setQuery: React.Dispatch<React.SetStateAction<GetOriginsProps>>
     removeOrigin: (id: number) => void
     gotoTagWorkspace: (workspace: Omit<ITagWorkspaceDataProps, 'container'>, type: 'human' | 'machine') => void
-    gotoResult: (result: Origin) => void
+    updateResult: (result: Origin, submit: boolean) => void
     gotoCreateOrigin: Noop
 }
 export const OriginTable: FC<IOriginTableProps> = ({
@@ -20,7 +20,7 @@ export const OriginTable: FC<IOriginTableProps> = ({
     setQuery,
     removeOrigin,
     gotoTagWorkspace,
-    gotoResult,
+    updateResult: gotoResult,
     gotoCreateOrigin
 }) => {
     const columns: ColumnProps<Origin>[] = [
@@ -60,7 +60,7 @@ export const OriginTable: FC<IOriginTableProps> = ({
                             </Button>
                         )}
                         {status === OriginType.finish && (
-                            <Button onClick={() => gotoResult(origin)} style={{ marginRight: 8 }}>
+                            <Button onClick={() => gotoResult(origin, false)} style={{ marginRight: 8 }}>
                                 查看结果
                             </Button>
                         )}
