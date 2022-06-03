@@ -39,7 +39,7 @@ export const useDisableSelect = (setTextBlocks: SetTextBlocks): React.RefObject<
             updateSelectable(ev);
         });
         textArea.addEventListener('mouseover', updateSelectable);
-    }, []);
+    }, [setTextBlocks]);
 
     return textAreaRef;
 };

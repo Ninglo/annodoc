@@ -88,7 +88,7 @@ export function useUpdate(setTextBlocks: SetTextBlocks, container: Container, ta
         document.addEventListener('keydown', handleKeyDown);
 
         return () => document.removeEventListener('keydown', handleKeyDown);
-    }, []);
+    }, [tags]);
 
     return updateTextBlocks;
 }
