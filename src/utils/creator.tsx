@@ -1,5 +1,4 @@
-import { ITag } from '../pages/workspace/components/workspace/type'
-import { Fields } from '../modal/type'
+import { Fields, ITag } from '../modal/type'
 
 export const createColors = (length: number): string[] => {
     const s = '100%'

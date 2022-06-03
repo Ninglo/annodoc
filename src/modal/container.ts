@@ -1,4 +1,4 @@
-import { ITag, ITextBlocks } from '../pages/workspace/components/workspace/type'
+import { ITag, ITextBlocks } from "./type"
 import { createTags } from '../utils/creator'
 import { getMachineResult } from './machine'
 import { Entitys, Fields, Inputs } from './type'
@@ -42,9 +42,7 @@ export default class Container {
         return new Container(...res)
     }
 
-    private constructor(private textBlocksList: ITextBlocks[], private tags: ITag[], public blockId: number) {
-        console.log(this.textBlocksList)
-    }
+    private constructor(private textBlocksList: ITextBlocks[], public tags: ITag[], public blockId: number) { }
 
     index = 0
 

@@ -2,8 +2,11 @@ import { Tooltip } from '@arco-design/web-react'
 import { IconCloseCircle } from '@arco-design/web-react/icon'
 import classNames from 'classnames'
 import { FC } from 'react'
-import { IWord } from '../type'
+import { ITextBlock } from "../../../../../modal/type"
 
+interface IWord extends ITextBlock {
+    removeTag: (id: number) => void
+}
 const Word: FC<IWord> = ({ text, color, field, isPlain, id, selectable, removeTag, position }) => {
     const className = classNames(
         [
