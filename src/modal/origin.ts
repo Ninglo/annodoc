@@ -1,5 +1,5 @@
 import { request } from './request'
-import { Entity, Entitys, Fields, Inputs } from './type'
+import { Entitys, Fields, Inputs } from './type'
 
 export const enum OriginType {
     begin = 1,

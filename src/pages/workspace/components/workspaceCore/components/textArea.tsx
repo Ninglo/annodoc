@@ -1,6 +1,6 @@
-import { FC, useCallback, useEffect, useRef } from 'react'
+import { FC } from 'react'
 import Word from './word'
-import { ITextBlock } from '../type'
+import { ITextBlock } from "../../../../../modal/type"
 
 export interface ITextArea {
     textAreaRef: React.RefObject<HTMLDivElement>
@@ -8,7 +8,6 @@ export interface ITextArea {
     removeTag: (id: number) => void
 }
 const TextArea: FC<ITextArea> = ({ textAreaRef, textBlocks, removeTag }) => {
-
     return (
         <div className="text-area" ref={textAreaRef}>
             {textBlocks.map((textBlock) => (

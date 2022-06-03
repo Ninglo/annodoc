@@ -22,3 +22,21 @@ export interface Entity {
 }
 
 export type Noop = () => void
+
+export type ITextBlocks = ITextBlock[]
+export interface ITextBlock {
+    text: string
+    type?: string
+    color?: string
+    isPlain: boolean
+    id: number
+    selectable: boolean
+    field: string
+    position: Position
+}
+
+export interface ITag {
+    color: string;
+    field: Field;
+    type: string;
+}

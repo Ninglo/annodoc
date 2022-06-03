@@ -6,7 +6,7 @@ interface IPrevBtn {
     onClick: () => void
 }
 
-const IPrevBtn: FC<IPrevBtn> = ({ onClick }) => (
+const PrevBtn: FC<IPrevBtn> = ({ onClick }) => (
     <Button className="next-btn" onClick={onClick}>
         Prev
         <div className="icon">
@@ -15,4 +15,4 @@ const IPrevBtn: FC<IPrevBtn> = ({ onClick }) => (
     </Button>
 )
 
-export default IPrevBtn
+export default PrevBtn

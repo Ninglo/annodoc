@@ -1,10 +1,9 @@
-import { Button, Form, Input, Select, Table, Typography, Grid } from '@arco-design/web-react'
+import { Button, Form, Input, PageHeader, Select, Table } from '@arco-design/web-react'
 import { ColumnProps } from '@arco-design/web-react/es/Table'
 import { FC } from 'react'
 import { GetOriginsProps, Origin, OriginType } from '../../modal/origin'
-import { Noop } from '../../modal/type'
 import { ITagWorkspaceDataProps } from '../workspace/main'
-const { Row, Col } = Grid
+import './index.scss'
 const { Item: FormItem } = Form
 
 export interface IOriginTableProps {
@@ -12,21 +11,22 @@ export interface IOriginTableProps {
     setQuery: React.Dispatch<React.SetStateAction<GetOriginsProps>>
     removeOrigin: (id: number) => void
     gotoTagWorkspace: (workspace: Omit<ITagWorkspaceDataProps, 'container'>, type: 'human' | 'machine') => void
-    gotoResult: (result: Origin) => void
-    gotoCreateOrigin: Noop
+    updateResult: (result: Origin, submit: boolean) => void
 }
 export const OriginTable: FC<IOriginTableProps> = ({
     origins,
     setQuery,
     removeOrigin,
     gotoTagWorkspace,
-    gotoResult,
-    gotoCreateOrigin
+    updateResult: gotoResult
 }) => {
     const columns: ColumnProps<Origin>[] = [
         {
             title: '名称',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            headerCellStyle: {
+                height: 64
+            }
         },
         {
             title: '字段列表',
@@ -60,7 +60,7 @@ export const OriginTable: FC<IOriginTableProps> = ({
                             </Button>
                         )}
                         {status === OriginType.finish && (
-                            <Button onClick={() => gotoResult(origin)} style={{ marginRight: 8 }}>
+                            <Button onClick={() => gotoResult(origin, false)} style={{ marginRight: 8 }}>
                                 查看结果
                             </Button>
                         )}
@@ -70,44 +70,44 @@ export const OriginTable: FC<IOriginTableProps> = ({
             }
         }
     ]
-    return <div>
-        <Row>
-            <Col span={20}>
-                <Typography.Title>标注列表</Typography.Title>
-            </Col>
-            <Col span={4} style={{ display: 'flex', alignItems: 'center', marginTop: 44 }}>
-                <Button type="primary" onClick={gotoCreateOrigin}>
-                    创建标注
-                </Button>
-            </Col>
-        </Row>
+    return <div className='origin-list'>
+        <PageHeader
+            title='标注文本列表'
+            subTitle='展示所有标注文本'
+        />
         <Form
-            style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row' }}
+            labelCol={{ span: 3, offset: 0 }}
+            wrapperCol={{ span: 16 }}
+            style={{ display: 'flex', justifyContent: 'space-around' }}
             onSubmit={setQuery}
         >
-            <FormItem field="name" label="名称: ">
-                <Input />
-            </FormItem>
-            <FormItem field="status" label="状态: ">
-                <Select
-                    options={[
-                        { label: '未开始', value: OriginType.begin },
-                        { label: '标记中', value: OriginType.doing },
-                        { label: '完成', value: OriginType.finish }
-                    ]} />
-            </FormItem>
-            <FormItem>
-                <Button
-                    style={{
-                        justifyContent: 'flex-end'
-                    }}
-                    type="primary"
-                    htmlType="submit"
-                >
-                    提交
-                </Button>
-            </FormItem>
-        </Form>
-        <Table columns={columns} data={origins}></Table>
-    </div>
+            <div className="origin-form">
+                <div className='form-left'>
+                    <FormItem field="name" label="名称: ">
+                        <Input />
+                    </FormItem>
+                    <FormItem field="status" label="状态: ">
+                        <Select
+                            options={[
+                                { label: '未开始', value: OriginType.begin },
+                                { label: '标记中', value: OriginType.doing },
+                                { label: '完成', value: OriginType.finish }
+                            ]} />
+                    </FormItem>
+                </div>
+                <div className='form-right'>
+                    <Button
+                        style={{
+                            justifyContent: 'flex-end'
+                        }}
+                        type="primary"
+                        htmlType="submit"
+                    >
+                        提交
+                    </Button>
+                </div>
+            </div>
+        </Form >
+        <Table border={false} columns={columns} data={origins}></Table>
+    </div >
 }

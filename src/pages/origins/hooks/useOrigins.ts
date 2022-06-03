@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getOrigins, GetOriginsProps, Origin } from "../../modal/origin"
+import { getOrigins, GetOriginsProps, Origin } from "../../../modal/origin"
 
 export const useOrigins = (defaultQuery: GetOriginsProps) => {
     const [query, setQuery] = useState(defaultQuery)

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { ITag } from '../type'
+import { ITag } from '../../../../../modal/type'
 import TagButton from './tagButton'
 
 export interface ITagButtonArea {

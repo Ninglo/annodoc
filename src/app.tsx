@@ -1,18 +1,11 @@
-import { FC, useCallback, useState } from 'react'
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom"
-import Origins from './pages/origins/origins'
-import Upload from './pages/upload/upload'
+import { FC } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from './provider'
 
 export const App: FC = () => {
 
   return <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Origins />} />
-      <Route path="/createUser" element={<Upload />} />
-    </Routes>
+    <Provider></Provider>
   </BrowserRouter>
+
 }

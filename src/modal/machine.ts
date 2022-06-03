@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ITag, ITextBlocks } from "../pages/workspace/components/workspace/type";
+import { ITag, ITextBlocks } from "./type";
 import { createTags } from "../utils/creator";
 import { Fields, Inputs } from "./type";
 

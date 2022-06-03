@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { ITag, ITextBlock } from './type'
+import { ITag, ITextBlock } from "../../../../modal/type"
 import { Noop } from '../../../../modal/type'
 import NextBtn from './components/nextBtn'
 import TextArea, { ITextArea as ITextAreaProps } from './components/textArea'
