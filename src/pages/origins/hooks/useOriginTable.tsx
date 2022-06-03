@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { useOrigins } from '../../../hooks/data/useOrigins';
+import { useOrigins } from './useOrigins';
 import Container from '../../../modal/container';
 import { Origin, removeOrigin } from '../../../modal/origin';
 import { ITagWorkspaceDataProps } from '../../workspace/main';

@@ -1,5 +1,5 @@
 import { Button, Form, Grid, Input, Typography, Upload as ArcoUpload } from '@arco-design/web-react'
-import React, { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { createOrigin } from '../../modal/origin'
 import { Fields } from '../../modal/type'
 import readBlob from '../../utils/readblob'

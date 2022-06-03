@@ -4,7 +4,7 @@ import Result from '../workspace/components/result'
 import { TagWorkspace, ITagWorkspaceDataProps } from '../workspace/main'
 import { IOriginTableProps, OriginTable } from './OriginTable'
 import { useOriginTable } from './hooks/useOriginTable'
-import { useResult } from './useResult'
+import { useResult } from './hooks/useResult'
 
 const Origins: FC = () => {
     const navigate = useNavigate()
