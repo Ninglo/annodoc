@@ -1,4 +1,47 @@
-body {
-  margin: 40px 2%;
-  background: #f2f3f5;
+.base-layout {
+    .base-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        height: 60px;
+        border: 1px solid #e5e6eb;
+
+        .base-header-left {
+            display: flex;
+            align-items: center;
+
+            margin-left: 14px;
+            font-size: 22px;
+            font-weight: bolder;
+            color: #165dff;
+
+            cursor: pointer;
+        }
+
+        .base-header-right {
+            margin-right: 16px;
+        }
+    }
+
+    .base-sider {
+        height: calc(100vh - 60px);
+    }
+
+    .base-content {
+        padding: 20px;
+        background: #f2f3f5;
+    }
+
+    .base-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 24px;
+        font-size: 8px;
+
+        background: #f2f3f5;
+        color: #97a0ab;
+    }
 }

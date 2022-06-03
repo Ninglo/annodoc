@@ -1,10 +1,11 @@
 import { ITextBlock } from "../../../modal/type";
-import { ITagWorkspaceProps } from '../main';
 import container from '../../../modal/container';
 import { Origin } from '../../../modal/origin';
 import { SetTextBlocks } from './useWorkspace';
+import { useResult } from "../../../hooks/data/useResult";
 
-export function usePrevNext(container: container, textBlocks: ITextBlock[], setTextBlocks: SetTextBlocks, onFinished: ITagWorkspaceProps['onFinished'], origin: Origin) {
+export function usePrevNext(container: container, textBlocks: ITextBlock[], setTextBlocks: SetTextBlocks, origin: Origin) {
+    const { updateResult: onFinished } = useResult()
     const prev = () => {
         if (!container.hasPrev) { return; }
 

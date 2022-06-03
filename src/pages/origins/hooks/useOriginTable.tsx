@@ -1,12 +1,15 @@
-import { Dispatch, SetStateAction } from 'react';
-import { NavigateFunction } from 'react-router-dom';
 import { useOrigins } from './useOrigins';
 import Container from '../../../modal/container';
-import { Origin, removeOrigin } from '../../../modal/origin';
-import { ITagWorkspaceDataProps } from '../../workspace/main';
+import { removeOrigin } from '../../../modal/origin';
 import { IOriginTableProps } from '../OriginTable';
+import { useResult } from '../../../hooks/data/useResult';
+import { useWorkspace } from '../../../hooks/data/useWorkspace';
+import { useNavigate } from 'react-router-dom';
 
-export function useOriginTable(setWorkspace: Dispatch<SetStateAction<ITagWorkspaceDataProps | null>>, updateResult: (result: Origin, submit: boolean) => void, navigate: NavigateFunction): IOriginTableProps {
+export function useOriginTable(): IOriginTableProps {
+    const navigate = useNavigate()
+    const [_, setWorkspace] = useWorkspace()
+    const { updateResult } = useResult()
     const { origins, setQuery } = useOrigins({});
     const originTableProps: IOriginTableProps = {
         origins,
@@ -20,9 +23,9 @@ export function useOriginTable(setWorkspace: Dispatch<SetStateAction<ITagWorkspa
                 ? await Container.machineTag(inputs, fields)
                 : Container.humanTag(inputs, fields);
             setWorkspace({ ...workspace, container });
+            navigate('/workspace')
         },
         updateResult,
-        gotoCreateOrigin() { navigate('/createUser'); }
     };
     return originTableProps;
 }
